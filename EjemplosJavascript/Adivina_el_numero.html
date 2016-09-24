@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Adivina el número</title>
+		
+		<script>
+			var intentos = 0;//Cuenta el número de intentos
+			var cuenta = 10;  //Tiempo para adivinar el numero en segundos
+			var aleatorio = Math.floor((Math.random() * 10) + 1); //número aleatorio que habrá que adivinar
+			var intervalo  
+			var comenzado = false; //Para comprobar si ha pulsado el boton comenzar
+			var vacio = " "; //Para quitar el texto del mensaje que aparece al comprbar resultados.
+			console.log(aleatorio);
+
+		function comenzar(){  
+			//Llamma a la funcion contador() cada 1 segundo, deshabilita el botón empezar 
+			//Quita el mensaje de comprobar si lo hubiese y pone a 0 el número introducido. 
+			intervalo = setInterval("contador()",1000);			
+			document.getElementById("btn").disabled = true;
+			document.getElementById("mensaje").innerHTML=vacio;
+			document.getElementById("numeroIntro").value=0;
+			comenzado = true;
+		}
+
+		function contador() {  //Pone una cuenta atrás
+			if(cuenta > 0){
+				document.getElementById("cuentaAtras").innerHTML=cuenta;
+				cuenta--;
+			}else{ //Si el tiempo se acaba, pone un mensaje y deshabilita el botón aceptar. 
+				document.getElementById("cuentaAtras").innerHTML=cuenta;
+				var texto = "Se ha acabado el tiempo";
+				clearInterval(intervalo); //Para el intervalo para que la función contador() deje de ser llamada. 
+				document.getElementById("textofin").innerHTML=texto;
+				document.getElementById("btn2").disabled = true;
+			}
+			
+		}
+	
+		function comprobar(){ //comprueba si ha acertado
+			var numAleatorioIntro = document.getElementById("numeroIntro").value;
+			if(comenzado){
+				if (aleatorio == numAleatorioIntro){
+					var acertado = "Has acertado!";
+					document.getElementById("mensaje").innerHTML=acertado;
+					clearInterval(intervalo);
+					document.getElementById("btn2").disabled = true;
+				}else{
+					var acertado = "Incorrecto!";
+					document.getElementById("mensaje").innerHTML=acertado;
+					intentos++;
+					document.getElementById("intentos").innerHTML=intentos;
+					
+				}
+			}else{
+				var errorComprobar = "Debes pulsar el botón Empezar para comenzar el juego"
+				document.getElementById("mensaje").innerHTML=errorComprobar;
+			}
+		}
+		
+		</script>
+		
+		
+	</head>
+	<body>
+		
+		<input type="button" id="btn" value="Empezar" onclick="comenzar()">
+
+		<h2>
+		<div id="cuentaAtras"></div>
+		</h2>
+		
+		<h2>Adivina el número</h2>
+		
+		<h2>Introduce un número <input type="number" value="0" min="0" id="numeroIntro"></h2> 
+		
+		<input type="button" id="btn2" value="Aceptar" onclick="comprobar()">
+		
+		<h2>
+		<div id="mensaje"></div>
+		</h2>
+		
+		<h2>
+		<p style="display: inline;"> Numero de intentos: <div style="display: inline;" id="intentos">0</div></p>
+		</h2>
+		
+		<h2>
+		<div id="textofin"></div>
+		</h2>
+
+		
+	</body>
+</html> 

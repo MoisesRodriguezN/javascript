@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Cuenta atrás</title>
+		
+		<script>
+	
+		function iniciar(){
+		
+		var cuenta = document.getElementById("segundos").value;
+		document.getElementById("btn").disabled = true;
+		
+		var intervalo = setInterval(function(){
+				//mientras que cuenta sea > que 0
+				if (cuenta > 0){
+					cuenta--; //Decrementa
+					document.getElementById("micuenta").innerHTML=cuenta;
+				}else{
+					clearInterval(intervalo);
+					document.getElementById("btn").disabled = false;
+				}
+			
+			},1000);
+		}
+		</script>
+		
+	</head>
+	<body>
+	
+		<input type="number" id="segundos"> 
+		<input type="button" id="btn" value="OK" onclick="iniciar()">
+
+		<div id="micuenta"></div>
+	
+		
+
+	</body>
+</html> 

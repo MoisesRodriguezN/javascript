@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Barra de progreso</title>
+		<script>
+			var longitud;  //Longitud inicial de la barra
+			var longitudMaxima; //Longitud introducida por el usuario
+			var color;			//Color introducido
+			var tiempo;			//Tiempo introducido
+			var intervalo;		
+			var porcentaje;		
+			
+			function comenzar(){  //Pone el color a la barra de progreso y llama a la función alargar()
+				color = document.getElementById("colorElegido").value;
+				document.getElementById("barraProgreso").style.background = color;
+				alargar();
+				
+			}
+			
+			function alargar(){ //Alarga la barra progreso y sube el porcentaje
+				longitudMaxima = document.getElementById("longitudElegida").value
+				tiempo = document.getElementById("tiempoElegido").value; //Tiempo del intervalo
+				longitud = 0; //Longitud inicial
+				porcentaje = 0; //Porcentaje inicial
+				intervalo = setInterval(function(){
+					longitud ++;  
+					porcentaje ++;
+					if (longitud <= longitudMaxima){ //Mientras la longitud inicial sea <= a la introducida se alargará la barr ay subira el %
+						document.getElementById("barraProgreso").style.width = (longitud + "px");
+						document.getElementById("porcentaje").innerHTML=porcentaje;
+						console.log(longitud);
+					}else{
+						clearInterval(intervalo); //Una vez llegue al máximo, se para el intervalo.
+					}
+				
+
+				},tiempo);				
+			}
+			
+		</script>
+		
+		<style>
+			div#barraProgreso{
+				height:50px;
+			}
+		</style>
+	</head>
+	<body>
+		Longitud: <input type="number" min="0" value="0" id="longitudElegida">
+		<br>
+		Color: <input type="color" id="colorElegido">
+		<br>
+		Tiempo por pixel: <input type="number" min="0" value="1" id="tiempoElegido">
+		<br>
+		<button id="aceptar" onclick="comenzar()">Aceptar</button>
+		<br>
+		<span id="porcentaje">0</span>%
+		<div id="barraProgreso"> </div>
+
+	</body>
+</html> 
