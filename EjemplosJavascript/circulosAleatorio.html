@@ -23,40 +23,35 @@
 	<script>
 		// capa.setAttribute("onclick","eliminarcapa(this)");
 		function crear(){
-			var circuloCreado = document.createElement("div");
-			circuloCreado.setAttribute("onclick","limpiar(this)");
-			circuloCreado.className = "circulo";
-            document.getElementById("cajaCirculos").appendChild(circuloCreado);	
-			var colorCirculo = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
-			circuloCreado.style.background = colorCirculo;
-			circuloCreado.style.left = getRand(0, 860) + "px";
-			circuloCreado.style.top = getRand(50, 360) + "px";
-			var tamaño = ((Math.random() * 100) + 20) + "px";
-			circuloCreado.style.width = tamaño;
-			circuloCreado.style.height = tamaño;
+			var circuloCreado = document.createElement("div");   //Crea el elemento div y lo guarda en circuloCreado
+			circuloCreado.setAttribute("onclick","limpiar(this)"); //Le pone atributo onclick
+			circuloCreado.className = "circulo"; //Lo pone en la clase "circulo"
+            document.getElementById("cajaCirculos").appendChild(circuloCreado);	//Coloca el circulo en el contenedor "CajaCirculos"
+			var colorCirculo = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")"; 
+			circuloCreado.style.background = colorCirculo; //Color circulo guarda un color aleatorio. Esa línea asigna el color al circuloCreado.
+			circuloCreado.style.left = getRand(0, 860) + "px"; 
+			circuloCreado.style.top = getRand(50, 360) + "px"; //Left y top Posicionan aleatoriamente el círculo. 
+			var tamaño = ((Math.random() * 100) + 20) + "px"; //Genera el tamaño aleatorio del círculo.
+			circuloCreado.style.width = tamaño; 
+			circuloCreado.style.height = tamaño; //Establecen el tamaño del círculo
 			
 		}
-		
-		
-		function limpiar(circuloCreado) {
-
+			
+		function limpiar(circuloCreado) { //Elimina el circulo que se pasa como argumento. 
             circuloCreado.parentNode.removeChild(circuloCreado);
-
         }
 		
-		function getRand(min, max) {
+		function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
             return Math.random() * (max - min) + min;
         }
-		
-		
-
-		function borrarTodo(){
-			var todoCiruculos = document.getElementById("cajaCirculos");
-			todoCiruculos.parentNode.removeChild(todoCiruculos);
 			
-			var cajaCirculos = document.createElement("div");
-			cajaCirculos.id = "cajaCirculos";
-			document.getElementById("contenedor").appendChild(cajaCirculos);	
+		function borrarTodo(){ //Borra todos los circulos creados. 
+			var todoCiruculos = document.getElementById("cajaCirculos");//Guardo el div contenedor de circulos en la variable.
+			todoCiruculos.parentNode.removeChild(todoCiruculos); //Desde el contenedor padre, borra el contenedor de los cículos.
+			
+			var cajaCirculos = document.createElement("div"); //Vuelve a crear el contenedor
+			cajaCirculos.id = "cajaCirculos"; //Le asigna una id.
+			document.getElementById("contenedor").appendChild(cajaCirculos); //Coloca el contenedor dentro del div padre "contenedor". 
 			
 		}
 	</script>
