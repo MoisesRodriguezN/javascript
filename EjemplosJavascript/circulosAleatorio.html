@@ -2,37 +2,74 @@
 <html>
 	<head>
 		<title>Circulos Aleatorios</title>
+		<meta charset="UTF-8">
 	</head>
 	
 	<style>
-		#content{
-            width: 600px;
-            height: 400px;
+		#contenedor{
             position: absolute;
         }
-		
+				
 		.circulo {
 			width: 100px;
 			height: 100px;
 			border-radius: 50%;
-			background: #5cb85c;
+			position: absolute;
+			
 		}
 		
 	</style>
 	
 	<script>
+		// capa.setAttribute("onclick","eliminarcapa(this)");
+		function crear(){
+			var circuloCreado = document.createElement("div");
+			circuloCreado.setAttribute("onclick","limpiar(this)");
+			circuloCreado.className = "circulo";
+            document.getElementById("cajaCirculos").appendChild(circuloCreado);	
+			var colorCirculo = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
+			circuloCreado.style.background = colorCirculo;
+			circuloCreado.style.left = getRand(0, 860) + "px";
+			circuloCreado.style.top = getRand(50, 360) + "px";
+			var tamaño = ((Math.random() * 100) + 20) + "px";
+			circuloCreado.style.width = tamaño;
+			circuloCreado.style.height = tamaño;
+			
+		}
 		
+		
+		function limpiar(circuloCreado) {
+
+            circuloCreado.parentNode.removeChild(circuloCreado);
+
+        }
+		
+		function getRand(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+		
+		
+
+		function borrarTodo(){
+			var todoCiruculos = document.getElementById("cajaCirculos");
+			todoCiruculos.parentNode.removeChild(todoCiruculos);
+			
+			var cajaCirculos = document.createElement("div");
+			cajaCirculos.id = "cajaCirculos";
+			document.getElementById("contenedor").appendChild(cajaCirculos);	
+			
+		}
 	</script>
 	
 	<body>
 		
 		<p>
-			<button onclick="()">Crear</button>
-			<button onclick="()">Limpiar</button>
+			<button onclick="crear()">crear</button>
+			<button onclick="borrarTodo()">limpiar</button>
 		</p> 
 
 		<div id ="contenedor">
-			<div class = "circulo"></div>
+			<div id="cajaCirculos"></div>
 		</div>
 		
 	</body>
