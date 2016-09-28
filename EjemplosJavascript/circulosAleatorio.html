@@ -22,10 +22,17 @@
 	
 	<script>
 		// capa.setAttribute("onclick","eliminarcapa(this)");
+		
+		var contador_capaid = 0;
+		var vacio = "";
 		function crear(){
 			var circuloCreado = document.createElement("div");   //Crea el elemento div y lo guarda en circuloCreado
-			circuloCreado.setAttribute("onclick","limpiar(this)"); //Le pone atributo onclick
+			circuloCreado.setAttribute("onclick","contador(this)"); //Le pone atributo onclick
+			circuloCreado.setAttribute("ondblclick","movimiento(this)"); //Le pone atributo onclick
 			circuloCreado.className = "circulo"; //Lo pone en la clase "circulo"
+			contador_capaid++;
+			circuloCreado.id = "capa: " + contador_capaid;
+			circuloCreado.value = 0;
             document.getElementById("cajaCirculos").appendChild(circuloCreado);	//Coloca el circulo en el contenedor "CajaCirculos"
 			var colorCirculo = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")"; 
 			circuloCreado.style.background = colorCirculo; //Color circulo guarda un color aleatorio. Esa línea asigna el color al circuloCreado.
@@ -36,10 +43,31 @@
 			circuloCreado.style.height = tamaño; //Establecen el tamaño del círculo
 			
 		}
-			
-		function limpiar(circuloCreado) { //Elimina el circulo que se pasa como argumento. 
+		
+		function contador(circuloCreado){
+			circuloCreado.value++;
+			document.getElementById("contador").innerHTML="Contador: " + circuloCreado.value;
+			document.getElementById("capa").innerHTML=circuloCreado.id;
+		}
+				
+		function movimiento(circuloCreado){
+			var posicion = circuloCreado.offsetLeft;
+			var id = setInterval(frame, 5);
+			function frame() {
+				if (posicion == 800) {
+				  clearInterval(id);
+				  circuloCreado.parentNode.removeChild(circuloCreado);
+				} else {
+				  posicion++; 
+				  circuloCreado.style.left = posicion + 'px'; 
+				}
+			}
+		}
+		/*function limpiar(circuloCreado) { //Elimina el circulo que se pasa como argumento. 
             circuloCreado.parentNode.removeChild(circuloCreado);
         }
+		*/
+		
 		
 		function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
             return Math.random() * (max - min) + min;
@@ -52,6 +80,7 @@
 			var cajaCirculos = document.createElement("div"); //Vuelve a crear el contenedor
 			cajaCirculos.id = "cajaCirculos"; //Le asigna una id.
 			document.getElementById("contenedor").appendChild(cajaCirculos); //Coloca el contenedor dentro del div padre "contenedor". 
+			contador_capaid = 0;
 			
 		}
 	</script>
@@ -62,7 +91,10 @@
 			<button onclick="crear()">crear</button>
 			<button onclick="borrarTodo()">limpiar</button>
 		</p> 
-
+		
+		<div id="contador"></div>
+		<div id="capa"></div>
+		
 		<div id ="contenedor">
 			<div id="cajaCirculos"></div>
 		</div>
