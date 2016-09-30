@@ -39,7 +39,7 @@
             position: absolute;
 		}
 		
-		#estiloEdificio{
+		.estiloEdificio{
 			width: 130px;
             height: 130px;
             background-image:url(edificio1.png);
@@ -56,23 +56,32 @@
 		var contador_capaid = 0;
 		var vacio = "";
 		var contador = 0;
-		var cuentaBombas = 5;
+		var cuentaBombas = 999;
 		var iniciado = false;
 		var avioncreado = document.createElement("div"); 
+		var nivel = 1;
+		var edificiosDerribados = 0;
+		var cuentaEdificio = 0;
+		var posLeftEdif;
+		var posLeftEdif2 = [];
+		var nombreEdif = [];
+		var indice = 0;
 		
 		function crear(){
 			//Crea el elemento div y lo guarda en circuloCreado
 			avioncreado.setAttribute("onclick","crearBomba(this)"); //Le pone atributo onclick
 			//avioncreado.setAttribute("ondblclick","movimiento(this)"); //Le pone atributo onclick
 			avioncreado.id = "avion"; //Lo pone en la clase "circulo"
-
+			document.getElementById("infoBombas").innerHTML="Bombas: " + cuentaBombas;
+			document.getElementById("infoNivel").innerHTML="Nivel: " + nivel;
+			document.getElementById("infoDerribado").innerHTML="Derribado: " + edificiosDerribados;
             document.getElementById("contenedor").appendChild(avioncreado);	//Coloca el circulo en el contenedor "CajaCirculos"
 			avioncreado.style.left = "50px"; 
 			avioncreado.style.top = "30px"; //Left y top Posicionan aleatoriamente el círculo	
 			movimiento(avioncreado);
 			if (!iniciado){ //Evita que se creen mas edificios cada vez que el avión desaparece.
 				var i;
-				for (i = 0; i < 4; i++){
+				for (i = 0; i < 10; i++){
 					creaEdificio();
 				}
 				iniciado = true;
@@ -80,13 +89,20 @@
 		}
 		
 		//Coloa los edificios
+		
 		function creaEdificio(){
 			var edificio = document.createElement("div");
-			var posicionLeft;
-			edificio.id = "estiloEdificio";	
+			edificio.className = "estiloEdificio";	
+			cuentaEdificio++;
+			edificio.id = cuentaEdificio + "edif";
 			edificio.style.top = 420 + "px";
-			edificio.style.left = getRand(40, 800) + "px"; 
+			posLeftEdif = parseInt(getRand(40, 800)); 
+			edificio.style.left = posLeftEdif + "px"
+			posLeftEdif2[indice] = posLeftEdif;
+			nombreEdif[indice] = edificio.id;
+			indice++;
 			document.getElementById("contenedor").appendChild(edificio);
+			
 		}
 		/*function contador(circuloCreado){
 			circuloCreado.value++;
@@ -96,7 +112,7 @@
 				
 		function movimiento(avioncreado){
 			var posicion = avioncreado.offsetLeft;
-			var id = setInterval(frame, 8);
+			var id = setInterval(frame, 40);
 			function frame() {
 				if (posicion == 800) {
 				  clearInterval(id);
@@ -108,12 +124,13 @@
 				}
 			}
 		}
-		
+
 		function crearBomba() {
 			
 			if (cuentaBombas > 0){
 				cuentaBombas--;
 				//crear capa
+				document.getElementById("infoBombas").innerHTML="Bombas: " + cuentaBombas;
 				var bomba = document.createElement("div");
 				//asigna clase
 				bomba.className = "bombazo";
@@ -154,8 +171,8 @@
 					miBomba.parentNode.removeChild(miBomba);
 					
                 }
-            }, 10)
-        }
+            }, 10)	
+		}
 		
 		//Hace el efecto de una explosión cuando el misil toca en el final. 
 		function explosion(topreal,leftreal){
@@ -166,14 +183,33 @@
 			document.getElementById("contenedor").appendChild(explosion);
 			var contadorExplosion = 0;
 			
-			var exploInterval = setInterval(function () {
-				contadorExplosion++;
+			var exploInterval = setInterval(function () { 
+				contadorExplosion++;  //Cuando pasa un seg, borra el div explosión
 				if(contadorExplosion == 1){
 					explosion.parentNode.removeChild(explosion);	
 					clearInterval(exploInterval);
+					derribaEdificios(leftreal)
 				}	
 			}, 1000)
 			 
+		} 
+		var indice2 = 0;
+		var i ;
+		var x ;
+		function derribaEdificios(leftreal){
+		
+			for(i = 0; i<posLeftEdif2.length; i++){
+				if((leftreal >= posLeftEdif2[i]-10) || (leftreal <= posLeftEdif2[i]+10)){
+					alert("borrado");
+					var edif = document.getElementById(nombreEdif[i]);
+					edif.parentNode.removeChild(edif);	
+					delete nombreEdif[i];
+				}
+			}
+			
+			
+			
+			indice2++;
 		}
 		
 		function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
@@ -193,8 +229,11 @@
 	</script>
 	
 	<body onload="crear()">
-			
-		<div id="contador"></div>
+	
+		<div id="infoNivel"></div>	
+		<div id="infoBombas"></div>
+		<div id="infoDerribado"></div>
+		
 		<div id="capa"></div>
 		
 		<div id ="contenedor">
