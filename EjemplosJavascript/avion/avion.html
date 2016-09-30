@@ -57,17 +57,17 @@
 		var vacio = "";
 		var contador = 0;
 		var cuentaBombas = 999;
-		var iniciado = false;
-		var avioncreado = document.createElement("div"); 
+		var avioncreado; 
 		var nivel = 1;
 		var edificiosDerribados = 0;
 		var cuentaEdificio = 0;
 		var posLeftEdif;
 		var posLeftEdif2 = [];
 		var nombreEdif = [];
-		var indice = 0;
+		//var indice = 0;
 		
 		function crear(){
+			avioncreado = document.createElement("div");
 			//Crea el elemento div y lo guarda en circuloCreado
 			avioncreado.setAttribute("onclick","crearBomba(this)"); //Le pone atributo onclick
 			//avioncreado.setAttribute("ondblclick","movimiento(this)"); //Le pone atributo onclick
@@ -79,18 +79,16 @@
 			avioncreado.style.left = "50px"; 
 			avioncreado.style.top = "30px"; //Left y top Posicionan aleatoriamente el círculo	
 			movimiento(avioncreado);
-			if (!iniciado){ //Evita que se creen mas edificios cada vez que el avión desaparece.
 				var i;
 				for (i = 0; i < 10; i++){
-					creaEdificio();
+					creaEdificio(i);
 				}
-				iniciado = true;
-			}	
+				
 		}
 		
 		//Coloa los edificios
 		
-		function creaEdificio(){
+		function creaEdificio(indice){
 			var edificio = document.createElement("div");
 			edificio.className = "estiloEdificio";	
 			cuentaEdificio++;
@@ -100,7 +98,6 @@
 			edificio.style.left = posLeftEdif + "px"
 			posLeftEdif2[indice] = posLeftEdif;
 			nombreEdif[indice] = edificio.id;
-			indice++;
 			document.getElementById("contenedor").appendChild(edificio);
 			
 		}
@@ -112,12 +109,14 @@
 				
 		function movimiento(avioncreado){
 			var posicion = avioncreado.offsetLeft;
-			var id = setInterval(frame, 40);
+			var id = setInterval(frame, 10);
 			function frame() {
 				if (posicion == 800) {
-				  clearInterval(id);
-				  avioncreado.parentNode.removeChild(avioncreado);
-				  crear();
+				avioncreado.style.left ='0px'; 
+				posicion = 0;
+				  //clearInterval(id);
+				  //parentNode.removeChild(avioncreado);
+				  //crear();
 				} else {
 				  posicion++; 
 				  avioncreado.style.left = posicion + 'px'; 
@@ -134,8 +133,6 @@
 				var bomba = document.createElement("div");
 				//asigna clase
 				bomba.className = "bombazo";
-				//Color aleatorio
-				var newColor = "rgb(" + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ")";
 				//bomba.style.backgroundColor = newColor;
 				//Left aleatorio
 				bomba.style.left = avioncreado.offsetLeft + "px";
@@ -193,29 +190,24 @@
 			}, 1000)
 			 
 		} 
-		var indice2 = 0;
 		var i ;
-		var x ;
 		function derribaEdificios(leftreal){
 		
 			for(i = 0; i<posLeftEdif2.length; i++){
-				if((leftreal >= posLeftEdif2[i]-10) || (leftreal <= posLeftEdif2[i]+10)){
-					alert("borrado");
+				if((leftreal >= posLeftEdif2[i]-50) && (leftreal <= posLeftEdif2[i]+50)){
 					var edif = document.getElementById(nombreEdif[i]);
 					edif.parentNode.removeChild(edif);	
 					delete nombreEdif[i];
+					delete posLeftEdif2[i];
 				}
 			}
 			
-			
-			
-			indice2++;
 		}
 		
 		function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
             return Math.random() * (max - min) + min;
         }
-			
+		/*	
 		function borrarTodo(){ //Borra todos los circulos creados. 
 			var todoCiruculos = document.getElementById("cajaCirculos");//Guardo el div contenedor de circulos en la variable.
 			todoCiruculos.parentNode.removeChild(todoCiruculos); //Desde el contenedor padre, borra el contenedor de los cículos.
@@ -225,7 +217,7 @@
 			document.getElementById("contenedor").appendChild(cajaCirculos); //Coloca el contenedor dentro del div padre "contenedor". 
 			contador_capaid = 0;
 			
-		}
+		}*/
 	</script>
 	
 	<body onload="crear()">
