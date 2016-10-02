@@ -52,21 +52,29 @@
 	
 	<script>
 		// capa.setAttribute("onclick","eliminarcapa(this)");
-		
-		var contador_capaid = 0;
 		var vacio = "";
 		var contador = 0;
-		var cuentaBombas = 999;
+		var cuentaBombas = 5;
 		var avioncreado; 
-		var nivel = 1;
+		var nivel = 0;
 		var edificiosDerribados = 0;
 		var cuentaEdificio = 0;
 		var posLeftEdif;
 		var posLeftEdif2 = [];
 		var nombreEdif = [];
+		var velocidadAvion = 30;
+		var borra = 0;
 		//var indice = 0;
 		
 		function crear(){
+		nivel++;
+		borra++;
+			if(borra == 2){
+				avioncreado.parentNode.removeChild(avioncreado);
+				cuentaBombas = 5;
+				borra= 1;
+			}
+			
 			avioncreado = document.createElement("div");
 			//Crea el elemento div y lo guarda en circuloCreado
 			avioncreado.setAttribute("onclick","crearBomba(this)"); //Le pone atributo onclick
@@ -77,10 +85,11 @@
 			document.getElementById("infoDerribado").innerHTML="Derribado: " + edificiosDerribados;
             document.getElementById("contenedor").appendChild(avioncreado);	//Coloca el circulo en el contenedor "CajaCirculos"
 			avioncreado.style.left = "50px"; 
-			avioncreado.style.top = "30px"; //Left y top Posicionan aleatoriamente el círculo	
+			avioncreado.style.top = "30px"; 	
 			movimiento(avioncreado);
+			
 				var i;
-				for (i = 0; i < 10; i++){
+				for (i = 0; i < 5; i++){
 					creaEdificio(i);
 				}
 				
@@ -93,7 +102,7 @@
 			edificio.className = "estiloEdificio";	
 			cuentaEdificio++;
 			edificio.id = cuentaEdificio + "edif";
-			edificio.style.top = 420 + "px";
+			edificio.style.top = 380 + "px";
 			posLeftEdif = parseInt(getRand(40, 800)); 
 			edificio.style.left = posLeftEdif + "px"
 			posLeftEdif2[indice] = posLeftEdif;
@@ -101,26 +110,57 @@
 			document.getElementById("contenedor").appendChild(edificio);
 			
 		}
-		/*function contador(circuloCreado){
-			circuloCreado.value++;
-			document.getElementById("contador").innerHTML="Contador: " + circuloCreado.value;
-			document.getElementById("capa").innerHTML=circuloCreado.id;
-		}*/
+		
 				
 		function movimiento(avioncreado){
 			var posicion = avioncreado.offsetLeft;
-			var id = setInterval(frame, 10);
+			var suma = 1;
+			switch(nivel) {
+				case 1:
+					velocidadAvion = 24;
+				break;
+				case 2:
+					velocidadAvion = 17;
+				break;
+				case 3:
+					velocidadAvion = 10;
+				break;
+				case 4:
+					velocidadAvion = 6;
+				break;
+				case 5:
+					velocidadAvion = 1;
+				break;
+				case 6:
+					suma = 2;
+					velocidadAvion = 1;
+				break;
+				case 7:
+					suma = 3;
+					velocidadAvion = 1;
+				break;
+				case 7:
+					suma = 5;
+					velocidadAvion = 1;
+				break;
+				case 8:	
+					empezarNuevo = "<button onclick=\"location.reload()\">Nueva partida</button>";
+					document.getElementById("infoPerdido").innerHTML="<span>Fin del juego</span><br>" + empezarNuevo;
+				default:
+			} 
+			
+			console.log(velocidadAvion);
+			console.log(suma);
+			var id = setInterval(frame, velocidadAvion);
 			function frame() {
-				if (posicion == 800) {
+				if ((posicion == 800) || (posicion == 801)) {
 				avioncreado.style.left ='0px'; 
 				posicion = 0;
-				  //clearInterval(id);
-				  //parentNode.removeChild(avioncreado);
-				  //crear();
 				} else {
-				  posicion++; 
-				  avioncreado.style.left = posicion + 'px'; 
+				  posicion += suma; 
+				  avioncreado.style.left = posicion + 'px';  
 				}
+	
 			}
 		}
 
@@ -160,7 +200,7 @@
 				//CAlcula su top lo mismo que offsetTop
                 var topreal = parseInt(miBomba.style.top);
 				var leftreal = parseInt(miBomba.style.left);
-                if (topreal < 420) {
+                if (topreal < 380) {
                     miBomba.style.top = (topreal += 2) + "px";
                 } else {
                     clearInterval(idinterval);
@@ -190,18 +230,31 @@
 			}, 1000)
 			 
 		} 
-		var i ;
+		var derribado = false;
 		function derribaEdificios(leftreal){
 		
-			for(i = 0; i<posLeftEdif2.length; i++){
+			for(var i = 0; i<posLeftEdif2.length; i++){
 				if((leftreal >= posLeftEdif2[i]-50) && (leftreal <= posLeftEdif2[i]+50)){
 					var edif = document.getElementById(nombreEdif[i]);
 					edif.parentNode.removeChild(edif);	
 					delete nombreEdif[i];
 					delete posLeftEdif2[i];
+					edificiosDerribados++;
+					document.getElementById("infoDerribado").innerHTML="Derribado: " + edificiosDerribados;
 				}
 			}
 			
+			if(edificiosDerribados == cuentaEdificio){
+				crear();
+				derribado = true;
+				document.getElementById("infoNivel").innerHTML="Nivel: " + nivel;
+			}
+			
+			if(cuentaBombas == 0){
+				var empezarNuevo;
+				empezarNuevo = "<button onclick=\"location.reload()\">Nueva partida</button>";
+				document.getElementById("infoPerdido").innerHTML=empezarNuevo;
+			}
 		}
 		
 		function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
@@ -225,6 +278,7 @@
 		<div id="infoNivel"></div>	
 		<div id="infoBombas"></div>
 		<div id="infoDerribado"></div>
+		<div id="infoPerdido"></div>
 		
 		<div id="capa"></div>
 		
