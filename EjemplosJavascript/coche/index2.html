@@ -1,0 +1,72 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Carrera Coches</title>
+        <style>
+				#contenedor{
+					position: absolute;
+				}
+				.cochecito{
+					width: 130px;
+					height: 130px;
+					background-image:url(coche.png);
+					background-size:120px 120px;
+					background-repeat: no-repeat;
+					position: absolute;
+				}
+			</style>
+			<script> 
+				var coche;
+				var posicion = 20;
+				var numeroCoche = 0;
+				var idCoche = 0;
+				
+				function comenzar(){
+					
+				}
+				
+				function crearCoche(){	
+					for (var i = 0; i < document.getElementById("numeroCoche").value; i++){
+						coche = document.createElement("div");
+						coche.id = "coche" + idCoche;
+						coche.className = "cochecito";
+						coche.style.left = 30 + "px";
+						coche.style.top = posicion + "px";
+						posicion += 120;
+						document.getElementById("contenedor").appendChild(coche);
+						idCoche++;
+						document.getElementById("btn").disabled = true;
+						movimiento(coche.id);
+					}
+				}
+				
+				function movimiento(cocheId){
+					console.log(cocheId);
+					var miCoche = document.getElementById(cocheId);
+					var posicion = miCoche.offsetLeft;
+					var id = setInterval(frame, parseInt(getRand(1, 12)));
+						function frame() {
+							if (posicion == 1100) {
+								clearInterval(id);
+							} else {
+								posicion++; 
+								miCoche.style.left = posicion + 'px'; 
+							}
+						}
+				}
+
+				function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
+					return Math.random() * (max - min) + min;
+				}
+      </script>
+    </head>
+    <body>
+    	<div id="elegirCoches"> 
+				<input type="number" value="2" min="2" max="5" id="numeroCoche">
+				<input type="button" id="btn" value="Aceptar" onclick="crearCoche()">
+				<input type="button" id="btn2" value="Comenzar Carrera" onclick="comenzar()">
+			</div>
+			<div id="contenedor"> </div>
+    </body>
+</html>
