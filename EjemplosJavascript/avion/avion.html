@@ -56,7 +56,7 @@
 		var contador = 0;
 		var cuentaBombas = 5;
 		var avioncreado; 
-		var nivel = 0;
+		var nivel = 6;
 		var edificiosDerribados = 0;
 		var cuentaEdificio = 0;
 		var posLeftEdif;
@@ -146,7 +146,9 @@
 				case 8:	
 					empezarNuevo = "<button onclick=\"location.reload()\">Nueva partida</button>";
 					document.getElementById("infoPerdido").innerHTML="<span>Fin del juego</span><br>" + empezarNuevo;
-				default:
+					document.getElementById("infoPerdido2").innerHTML="Fin del juego. Superaste todos los niveles.";
+					cuentaBombas = 0;
+					document.getElementById("infoBombas").innerHTML="Bombas: " + cuentaBombas;
 			} 
 			
 			console.log(velocidadAvion);
@@ -279,7 +281,7 @@
 		<div id="infoBombas"></div>
 		<div id="infoDerribado"></div>
 		<div id="infoPerdido"></div>
-		
+		<div id="infoPerdido2"></div>
 		<div id="capa"></div>
 		
 		<div id ="contenedor">
