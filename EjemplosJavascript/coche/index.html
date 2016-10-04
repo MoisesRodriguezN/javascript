@@ -8,10 +8,10 @@
 				position: absolute;
 			}
 			.cochecito{
-				width: 220px;
+				width: 320px;
 				height: 150px;
 				background-image:url(coche.png);
-				background-size:180px 120px;
+				background-size:280px 120px;
 				background-repeat: no-repeat;
 				position: absolute;
 			}
@@ -61,7 +61,7 @@
 				ganador = 0; //Para que vuelva a entrar a los bucles. 
 				var id = setInterval(frame, parseInt(getRand(1, 12)));
 					function frame() {
-						if (posicion == 1100) {
+						if (posicion == 1000) {
 							clearInterval(id);
 							cocheGanador = miCoche; //Guarda el coche que llegue primero
 							
@@ -72,14 +72,12 @@
 								cocheApuesta = "coche" + document.getElementById("numeroCoche2").value; //coche por el que ha apostado
 								
 								if ((cocheGanador.id == cocheApuesta) && (ganador == 1)){ //si ha llegado primero el coche por el que aposté.
-									alert("eres ganador");
 									ganador ++; //esto evita que entre en el otro bucle con los coches restantes, ya que cambiaría a perdedor el estado.
 									dinero += apostado*2; 
 									document.getElementById("disponible").innerHTML=dinero + "€";
 								}
 
 								if ((cocheGanador.id != cocheApuesta) && (ganador == 1)){
-									alert("eres perdedor");
 									ganador ++; //tambien evita que se entre el el bucle de ganador si ya ha perdido la apuesta. 
 									dinero -= apostado;
 									document.getElementById("disponible").innerHTML=dinero + "€";
