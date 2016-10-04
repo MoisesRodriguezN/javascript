@@ -73,7 +73,7 @@
 								
 								if ((cocheGanador.id == cocheApuesta) && (ganador == 1)){ //si ha llegado primero el coche por el que aposté.
 									ganador ++; //esto evita que entre en el otro bucle con los coches restantes, ya que cambiaría a perdedor el estado.
-									dinero += apostado*2; 
+									dinero += apostado*document.getElementById("numeroCoche").value; 
 									document.getElementById("disponible").innerHTML=dinero + "€";
 								}
 
