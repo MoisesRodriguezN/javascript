@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Coche y puerta</title>
+		<meta charset="UTF-8">
+		<style>
+		#contenedor{
+            position: absolute;
+        }
+		.cochecito{
+			width: 320px;
+			height: 150px;
+			background-image:url(coche.png);
+			background-size:280px 120px;
+			background-repeat: no-repeat;
+			position: absolute;
+		}
+
+		.portazo{
+			width: 320px;
+			height: 300px;
+			background-image:url(muro.png);
+			background-size:200px 200px;
+			background-repeat: no-repeat;
+			position: absolute;
+		}		
+		</style>
+		<script>
+			var coche;
+			var puerta;
+			var leftPuerta = 0;
+			function crearCoche(){	
+				coche = document.createElement("div");
+				coche.id = "cochecillo"
+				coche.className = "cochecito";
+				coche.style.left = 30 + "px";
+				coche.style.top = 400 + "px";
+				document.getElementById("contenedor").appendChild(coche);	
+				crearPuerta();
+				movimiento(coche)
+			}
+			
+			function crearPuerta(){
+				puerta = document.createElement("div");
+				puerta.id ="porton";
+				puerta.setAttribute("onclick","borrarPuerta(this)");
+				puerta.className = "portazo";
+				leftPuerta = 600;
+				puerta.style.left = leftPuerta + "px";
+				puerta.style.top = 350 + "px";
+				document.getElementById("contenedor").appendChild(puerta);	
+			}
+			
+			function borrarPuerta(porton){
+				porton.parentNode.removeChild(porton);
+				leftPuerta = 0;
+			}
+			function movimiento(miCoche){
+				var posicion = miCoche.offsetLeft;
+				var id = setInterval(frame, 8);
+					function frame() {
+						if (posicion == 1000) {
+							clearInterval(id);
+						} else {
+							posicion++; 
+							miCoche.style.left = posicion + 'px'; 
+							if(posicion == leftPuerta-185){
+								clearInterval(id);
+							}
+						}
+					}
+			}
+			
+			function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
+				return Math.random() * (max - min) + min;
+			}
+		</script>
+	</head>
+	<body onload="crearCoche()">
+		<div id ="contenedor">
+				
+		</div>
+	</body>
+</html> 

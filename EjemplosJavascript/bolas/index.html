@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bolas aleatorias</title>
+		<meta charset="UTF-8">
+		<style>
+		#contenedor{
+            position: absolute;
+        }
+				
+		.circulo {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			position: absolute;
+			
+			
+		}
+		</style>
+		<script>
+			function crear(capaanterior){
+				var circuloCreado = document.createElement("div");   //Crea el elemento div y lo guarda en circuloCreado
+				circuloCreado.setAttribute("ondblclick","borrar(this)"); //Le pone atributo doble click. Función que borra el círculo.
+				circuloCreado.className = "circulo"; //Lo pone en la clase "circulo"
+				document.getElementById("contenedor").appendChild(circuloCreado);	//Coloca el circulo en el contenedor
+				var colorCirculo = "blue"; //Color circulo guarda un color aleatorio. Esa línea asigna el color al circuloCreado.
+				circuloCreado.style.background = colorCirculo;
+				circuloCreado.style.left = getRand(0, 860) + "px"; 
+				circuloCreado.style.top = getRand(50, 360) + "px"; //Left y top Posicionan aleatoriamente el círculo. 
+				var tamaño = 50 + "px"; //Genera el tamaño aleatorio del círculo.
+				circuloCreado.style.width = tamaño; 
+				circuloCreado.style.height = tamaño; //Establecen el tamaño del círculo
+				circuloCreado.setAttribute("onclick","crear(this)");	
+				
+				if (capaanterior == null){
+					circuloCreado.innerHTML=1;
+				}else{
+					circuloCreado.innerHTML=parseInt(capaanterior.innerHTML)+1;
+				}
+			}
+			
+			function borrar(circuloBorrar){//borra el círculo que ha sido seleccionado,. 
+				circuloBorrar.parentNode.removeChild(circuloBorrar);
+			}
+		
+			function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
+				return Math.random() * (max - min) + min;
+			}
+		</script>
+	</head>
+	<body onload="crear(null)">
+		<div id ="contenedor">
+				
+		</div>
+	</body>
+</html> 

@@ -50,6 +50,7 @@
 					var miCoche = document.getElementById(arrayIdCoche[i]);
 					var miCocheId = miCoche.id;
 					movimiento(miCocheId);
+					document.getElementById("btn2").disabled = true;
 				}		
 			}
 			
@@ -74,12 +75,14 @@
 									ganador ++; //esto evita que entre en el otro bucle con los coches restantes, ya que cambiaría a perdedor el estado.
 									dinero += apostado*document.getElementById("numeroCoche").value; 
 									document.getElementById("disponible").innerHTML=dinero + "€";
+									document.getElementById("btn2").disabled = false;
 								}
 
 								if ((cocheGanador.id != cocheApuesta) && (ganador == 1)){
 									ganador ++; //tambien evita que se entre el el bucle de ganador si ya ha perdido la apuesta. 
 									dinero -= apostado;
 									document.getElementById("disponible").innerHTML=dinero + "€";
+									document.getElementById("btn2").disabled = false;
 								}
 								
 							}else{//Si se introduce mas dinero del disponible, aparece el mensaje.
@@ -93,12 +96,16 @@
 					}
 			}
 			
-			function apostar(){
-				apostado = document.getElementById("apuesta").value;
-				cocheApuesta = "coche" + document.getElementById("numeroCoche2").value;
-				if(cocheGanador.id == cocheApuesta){
-				 alert("eres ganador");
-				}
+			function reanudar(){
+				var contenedorBorrar = document.getElementsByClassName("cochecito");
+				var i = 0;
+				posicion = 20;
+				dinero = 500;
+				do{
+					contenedorBorrar[i].parentNode.removeChild(contenedorBorrar[i]);
+				}while(contenedorBorrar.length > 0);
+				document.getElementById("btn").disabled = false;
+
 			}
 
 			function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
@@ -111,6 +118,7 @@
 			Número de coches: <input type="number" value="2" min="2" max="5" id="numeroCoche">
 			<input type="button" id="btn" value="Aceptar" onclick="crearCoche()"><br>
 			<input type="button" id="btn2" value="Comenzar Carrera" onclick="comenzar()">
+			<input type="button" id="btn3" value="Reanudar" onclick="reanudar()">
 		</div>
 		<div id="apostar">
 			<br>
