@@ -27,8 +27,12 @@
 		</style>
 		<script>
 			var coche;
-			var puerta;
-			var leftPuerta = 0;
+			var muro;
+			var leftMuro = 0;
+			var muroLevantado = false;
+			var comenzadoAvance = false;
+			var comenzadoRetroceso = false;
+			
 			function crearCoche(){	
 				coche = document.createElement("div");
 				coche.id = "cochecillo"
@@ -37,38 +41,103 @@
 				coche.style.top = 400 + "px";
 				document.getElementById("contenedor").appendChild(coche);	
 				crearMuro();
-				movimiento(coche)
 			}
 			
 			function crearMuro(){
 				muro = document.createElement("div");
-				muro.setAttribute("onclick","borrarPuerta(this)");
 				muro.className = "muralla";
+				muro.id = "murillo";
 				leftMuro = 600;
 				muro.style.left = leftMuro + "px";
 				muro.style.top = 350 + "px";
 				document.getElementById("contenedor").appendChild(muro);	
 			}
 			
-			function borrarPuerta(muroPiedra){
-				muroPiedra.parentNode.removeChild(muroPiedra);
-				leftMuro = 0;
+			function levantaMuro(){
+				var  posicionAlto = muro.offsetTop;
+				console.log(posicionAlto);
+				document.getElementById("botonBajaMuro").disabled = true;
+				var id = setInterval(frame, 6);
+				function frame() {
+					if (posicionAlto == 150) {
+					    clearInterval(id);
+						muroLevantado = true;
+						document.getElementById("botonBajaMuro").disabled = false;
+						if(comenzadoAvance){
+							avanzarCoche();
+						}
+						
+						if(comenzadoRetroceso){
+							retrocedeCoche();
+						}
+					} else {
+					  posicionAlto --; 
+					  muro.style.top = posicionAlto + 'px';  
+					}
+		
+				}
 			}
-			function movimiento(miCoche){
-				var posicion = miCoche.offsetLeft;
-				var id = setInterval(frame, 8);
+			
+			function bajaMuro(){
+				var  posicionAlto = muro.offsetTop;
+				document.getElementById("botonLevantaMuro").disabled = true;
+				var id = setInterval(frame, 6);
+				function frame() {
+					if (posicionAlto == 350) {
+					    clearInterval(id);
+						muroLevantado = false;
+						document.getElementById("botonLevantaMuro").disabled = false;
+					} else {
+					  posicionAlto ++; 
+					  muro.style.top = posicionAlto + 'px';  
+					}
+		
+				}
+			}
+			
+			function avanzarCoche(){
+				comenzadoAvance = true;
+				var posicion = coche.offsetLeft;
+				var id = setInterval(frame, 6);
+				document.getElementById("botonRetrocede").disabled = true;
 					function frame() {
 						if (posicion == 1000) {
 							clearInterval(id);
+							document.getElementById("botonRetrocede").disabled = false;
+							comenzadoAvance = false;
 						} else {
 							posicion++; 
-							miCoche.style.left = posicion + 'px'; 
-							if(posicion == leftMuro-185){
+							coche.style.left = posicion + 'px'; 
+							if(posicion == leftMuro-255 && !muroLevantado){
 								clearInterval(id);
+								document.getElementById("botonRetrocede").disabled = false;
 							}
 						}
 					}
 			}
+			
+			function retrocedeCoche(){
+				comenzadoRetroceso = true;
+				var posicion = coche.offsetLeft;
+				var id = setInterval(frame, 6);
+				document.getElementById("botonAvanzar").disabled = true;
+					function frame() {
+						if (posicion == 30) {
+							clearInterval(id);
+							document.getElementById("botonAvanzar").disabled = false;
+							comenzadoRetroceso = false;
+						} else {
+							posicion--; 
+							coche.style.left = posicion + 'px'; 
+							if(posicion == leftMuro+215 && !muroLevantado){
+								clearInterval(id);
+								document.getElementById("botonAvanzar").disabled = false;
+							}
+						}
+					}
+			}
+			
+			
 			
 			function getRand(min, max) { //Número aleatorio entre un máximo y un mínimo.
 				return Math.random() * (max - min) + min;
@@ -77,7 +146,10 @@
 	</head>
 	<body onload="crearCoche()">
 		<div id ="contenedor">
-				
+			<input type="button" id="botonAvanzar" value="Avanzar" onclick="avanzarCoche()">
+			<input type="button" id="botonRetrocede" value="Retroceder" onclick="retrocedeCoche()">
+			<input type="button" id="botonLevantaMuro" value="Levantar Muro" onclick="levantaMuro()">
+			<input type="button" id="botonBajaMuro" value="Bajar Muro" onclick="bajaMuro()">
 		</div>
 	</body>
 </html> 
